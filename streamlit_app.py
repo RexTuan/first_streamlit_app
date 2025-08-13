@@ -62,36 +62,63 @@ import numpy as np
 # """
 # st.latex(latex)
 
-# 006-markdown功能>將 Markdown 語法 和 HTML 語法轉換成網頁上實際的樣式。
-st.markdown("這不是標題")
-st.markdown("# 這是一級標題 (H1)")
-st.markdown("## 這是二級標題 (H2)")
-st.markdown("### 這是三級標題 (H3)")
-st.markdown("這段文字包含 **粗體** 和 *斜體*。")
-st.markdown("您也可以混合使用，像這樣 ***又粗又斜***。")
-st.markdown("這是上方的內容。")
-st.markdown("---") # 分隔線只需要三個減號
-st.markdown("這是下方的內容。")
-st.markdown("> 這是一段引言，通常會用來凸顯某個重點或名言佳句。")
-st.markdown("歡迎訪問 [Streamlit 官方文件](https://docs.streamlit.io/)。")
+# # 006-markdown功能>將 Markdown 語法 和 HTML 語法轉換成網頁上實際的樣式。
+# st.markdown("這不是標題")
+# st.markdown("# 這是一級標題 (H1)")
+# st.markdown("## 這是二級標題 (H2)")
+# st.markdown("### 這是三級標題 (H3)")
+# st.markdown("#### 這是四級標題 (H4)")
+# st.markdown("這段文字包含 **粗體** 和 *斜體*。")
+# st.markdown("您也可以混合使用，像這樣 ***又粗又斜***。")
+# st.markdown("這是上方的內容。")
+# st.markdown("---") # 分隔線只需要三個減號
+# st.markdown("這是下方的內容。")
+# st.markdown("> 這是一段引言，通常會用來凸顯某個重點或名言佳句。")
+# st.markdown("歡迎訪問 [Streamlit 官方文件](https://docs.streamlit.io/)。")
 
-# 007-st.dataframe、st.table
-df = pd.DataFrame({
-    'player_id': ['163008','163010','176583'],
-    'level': [37,53,8]
-})
-st.dataframe(df)
-st.write("---")
-st.write(df)
-st.markdown("---")
-st.table(df) ## table 是使用者不可以手動調整的格式
-st.markdown("---")
+# # 007-st.dataframe、st.table
+# df = pd.DataFrame({
+#     'player_id': ['163008','163010','176583'],
+#     'level': [37,53,8]
+# })
+# st.dataframe(df)
+# st.write("---")
+# st.write(df)
+# st.markdown("---")
+# st.table(df) ## table 是使用者不可以手動調整的格式
+# st.markdown("---")
 
-# 008-st.metric
-kpi_today = 65
-kpi_yesterday = 66
-delta = kpi_today - kpi_yesterday
-st.metric("change of revenue",kpi_today,delta)
+# 008-st.metric  ### 可以顯示升降的KPI指標! 
+# kpi_today = 65
+# kpi_yesterday = 66
+# delta = kpi_today - kpi_yesterday
+# st.metric('change of revenue',kpi_today,delta)
+
+# 009-核取方塊
+# st.checkbox("請勾我",True)
+# count = 0
+# if st.checkbox("請勾我A"):
+#     count +=1
+# if st.checkbox("請勾我B"):
+#     count +=1
+# if st.checkbox("請勾我C"):
+#     count +=1
+# st.metric('select me',count,count)
+
+# 010-單選按鈕(radio)、下拉式選單(selectbox)
+choice = st.selectbox('please select one you like',('A','B','C'))
+choice = st.radio('please select one you like',('A','B','C'))
+st.markdown(f"choice: *{choice}*")
+st.header("楓之谷Artale調查")
+st.markdown("---")
+st.subheader("問題一：您的角色職業是？")
+q1_choice = st.radio(
+     label="請選擇目前的轉職職稱",
+     options=["十字軍", "騎士", "龍騎士", "冰雷魔導士", "火毒魔導士", "祭司", "遊俠", "弩弓手", "神偷", "暗殺者", "格鬥家", "神槍手"],
+     captions=["劍士", "劍士", "劍士", "法師", "法師", "法師", "弓箭手", "弓箭手", "盜賊", "盜賊", "海盜", "盜賊"],
+     horizontal=True,
+)
+st.info(f'您的職業是: **{q1_choice}**')
 
 # 底下的rerun按紐
 st.button('rerun')
