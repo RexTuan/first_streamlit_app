@@ -13,7 +13,6 @@ import numpy as np
 
 # # 002-顯示按紐+if功能
 # st.header('st.button')
-
 # if st.button('Say hello'):
 #     st.write('Why hello there')
 # else:
@@ -32,35 +31,67 @@ import numpy as np
 # st.write(f'計數 = {count}')
 
 # 005-常用功能介紹
-st.title('title')
-st.header('header')
-st.subheader('subheader')
-st.write('Hello, *World!* :sunglasses:')
-st.write(1234)
+# st.title('title')
+# st.header('header')
+# st.subheader('subheader')
+# st.write('Hello, *World!* :sunglasses:')
+# st.write(1234)
+# df = pd.DataFrame({
+#      '*World!*': [1, 2, 3, 4],
+#      'second column': [10, 20, 30, 40]
+#      })
+# st.write('Below is a DataFrame:', df, 'Above is a dataframe.')
+
+# df2 = pd.DataFrame(
+#      np.random.randn(200, 3),
+#      columns=['a', 'b', 'c'])
+# c = alt.Chart(df2).mark_circle().encode(
+#      x='a', y='b', size='c', color='c', tooltip=['a', 'b', 'c'])
+# st.write(c)
+
+# sql = """
+# select 
+# Player_ID,
+# Player_CreateTime
+# from 
+# uba.t11_player"""
+# st.code(sql)
+
+# latex = """
+# y = ax^2+b
+# """
+# st.latex(latex)
+
+# 006-markdown功能>將 Markdown 語法 和 HTML 語法轉換成網頁上實際的樣式。
+st.markdown("這不是標題")
+st.markdown("# 這是一級標題 (H1)")
+st.markdown("## 這是二級標題 (H2)")
+st.markdown("### 這是三級標題 (H3)")
+st.markdown("這段文字包含 **粗體** 和 *斜體*。")
+st.markdown("您也可以混合使用，像這樣 ***又粗又斜***。")
+st.markdown("這是上方的內容。")
+st.markdown("---") # 分隔線只需要三個減號
+st.markdown("這是下方的內容。")
+st.markdown("> 這是一段引言，通常會用來凸顯某個重點或名言佳句。")
+st.markdown("歡迎訪問 [Streamlit 官方文件](https://docs.streamlit.io/)。")
+
+# 007-st.dataframe、st.table
 df = pd.DataFrame({
-     '*World!*': [1, 2, 3, 4],
-     'second column': [10, 20, 30, 40]
-     })
-st.write('Below is a DataFrame:', df, 'Above is a dataframe.')
+    'player_id': ['163008','163010','176583'],
+    'level': [37,53,8]
+})
+st.dataframe(df)
+st.write("---")
+st.write(df)
+st.markdown("---")
+st.table(df) ## table 是使用者不可以手動調整的格式
+st.markdown("---")
 
-df2 = pd.DataFrame(
-     np.random.randn(200, 3),
-     columns=['a', 'b', 'c'])
-c = alt.Chart(df2).mark_circle().encode(
-     x='a', y='b', size='c', color='c', tooltip=['a', 'b', 'c'])
-st.write(c)
+# 008-st.metric
+kpi_today = 65
+kpi_yesterday = 66
+delta = kpi_today - kpi_yesterday
+st.metric("change of revenue",kpi_today,delta)
 
-sql = """
-select 
-Player_ID,
-Player_CreateTime
-from 
-uba.t11_player"""
-st.code(sql)
-
-latex = """
-y = ax^2+b
-"""
-st.latex(latex)
-
+# 底下的rerun按紐
 st.button('rerun')
