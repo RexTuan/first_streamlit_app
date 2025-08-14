@@ -106,19 +106,168 @@ import numpy as np
 # st.metric('select me',count,count)
 
 # 010-單選按鈕(radio)、下拉式選單(selectbox)
-choice = st.selectbox('please select one you like',('A','B','C'))
-choice = st.radio('please select one you like',('A','B','C'))
-st.markdown(f"choice: *{choice}*")
-st.header("楓之谷Artale調查")
-st.markdown("---")
-st.subheader("問題一：您的角色職業是？")
-q1_choice = st.radio(
-     label="請選擇目前的轉職職稱",
-     options=["十字軍", "騎士", "龍騎士", "冰雷魔導士", "火毒魔導士", "祭司", "遊俠", "弩弓手", "神偷", "暗殺者", "格鬥家", "神槍手"],
-     captions=["劍士", "劍士", "劍士", "法師", "法師", "法師", "弓箭手", "弓箭手", "盜賊", "盜賊", "海盜", "盜賊"],
-     horizontal=True,
-)
-st.info(f'您的職業是: **{q1_choice}**')
+# choice = st.selectbox('please select one you like',('A','B','C'))
+# choice = st.radio('please select one you like',('A','B','C'))
+# st.markdown(f"choice: *{choice}*")
+# st.header("楓之谷Artale調查")
+# st.markdown("---")
+# st.subheader("問題一：您的角色職業是？")
+# q1_choice = st.radio(
+#      label="請選擇目前的轉職職稱",
+#      options=["十字軍", "騎士", "龍騎士", "冰雷魔導士", "火毒魔導士", "祭司", "遊俠", "弩弓手", "神偷", "暗殺者", "格鬥家", "神槍手"],
+#      captions=["劍士", "劍士", "劍士", "法師", "法師", "法師", "弓箭手", "弓箭手", "盜賊", "盜賊", "海盜", "盜賊"],
+#      horizontal=True,
+# )
+# st.info(f'您的職業是: **{q1_choice}**')
 
-# 底下的rerun按紐
-st.button('rerun')
+# 011-多選下拉式選單(multiselect)
+# selected_equipments = st.multiselect('請勾選裝備(多選)',['披風','鞋子'])
+# st.markdown("---")
+# # 012-輸入數值(number_input)
+# if '披風' in selected_equipments:
+#      st.markdown('##### 請輸入欲購買披風素質')
+#      col1, col2, col3 = st.columns(3)
+#      with col1:
+#          var_cloak_str = st.number_input('請輸入力量(STR)',min_value=0,step=1,format="%d",key="var_cloak_str")
+#      with col2:
+#          var_cloak_dex = st.number_input('請輸入敏捷(DEX)',min_value=0,step=1,format="%d",key="var_cloak_dex")
+#      with col3:
+#          var_cloak_price = st.number_input('請輸入價格(雪花)',min_value=0,step=1,format="%d",key="var_cloak_price")
+#      st.markdown('##### 請輸入現有披風素質')
+#      col4, col5 = st.columns(2)
+#      with col4:
+#          var_current_cloak_str = st.number_input('請輸入*現有*披風力量(STR)',min_value=0,step=1,format="%d",key="var_current_cloak_str")
+#      with col5:
+#          var_current_cloak_dex = st.number_input('請輸入*現有*披風敏捷(DEX)',min_value=0,step=1,format="%d",key="var_current_cloak_dex")
+#      var_cloak_ap = var_cloak_str + var_cloak_dex
+#      var_current_cloak_ap = var_current_cloak_str + var_current_cloak_dex
+#      if st.button("確認",key='cloak'):
+#         st.success(f"您欲購買**{var_cloak_ap}**屬(**{var_cloak_str}**力**{var_cloak_dex}**敏)披風，價格為**{var_cloak_price}**雪。")
+#         st.success(f"目前裝備**{var_current_cloak_ap}**屬(**{var_current_cloak_str}**力**{var_current_cloak_dex}**敏)披風。")
+#      st.markdown('---')
+# if '鞋子' in selected_equipments:
+#      st.markdown('##### 請輸入欲購買鞋子素質')
+#      col1, col2, col3 = st.columns(3)
+#      with col1:
+#          var_shoes_str = st.number_input('請輸入力量(STR)',min_value=0,step=1,format="%d",key="var_shoes_str")
+#      with col2:
+#          var_shoes_dex = st.number_input('請輸入敏捷(DEX)',min_value=0,step=1,format="%d",key="var_shoes_dex")
+#      with col3:
+#          var_shoes_price = st.number_input('請輸入價格(雪花)',min_value=0,step=1,format="%d",key="var_shoes_price")
+#      st.markdown('##### 請輸入現有鞋子素質')
+#      col4, col5 = st.columns(2) 
+#      with col4:
+#          var_current_shoes_str = st.number_input('請輸入*現有*鞋子力量(STR)',min_value=0,step=1,format="%d",key="var_current_shoes_str")
+#      with col5:
+#          var_current_shoes_dex = st.number_input('請輸入*現有*鞋子敏捷(DEX)',min_value=0,step=1,format="%d",key="var_current_shoes_dex")
+#      var_shoes_ap = var_shoes_str + var_shoes_dex
+#      var_current_shoes_ap = var_current_shoes_str + var_current_shoes_dex
+#      if st.button("確認",key='shoes'):
+#          st.success(f"您欲購買**{var_shoes_ap}**屬**{var_shoes_str}**力**{var_shoes_dex}**敏鞋子，價格為**{var_shoes_price}**雪。")
+#          st.success(f"目前裝備**{var_current_shoes_ap}**屬**{var_current_shoes_str}**力**{var_current_shoes_dex}**敏鞋子。")
+# # 底下的rerun按紐
+# st.markdown('---')
+# st.button('rerun')
+
+# 012-(gemini示範區)
+# --- 頁面標題與說明 ---
+# st.title("⚔️ 裝備效益分析小工具")
+# st.markdown("比較不同裝備的素質提升與價格，找出最划算的購買順序！")
+
+# # --- 讓使用者選擇要比較的裝備 ---
+# options = ['披風', '鞋子', '頭盔']
+# selected_equipments = st.multiselect(
+#     '請勾選您想比較的裝備（可複選）',
+#     options,
+#     default=['披風', '鞋子'] # 預設勾選兩項，方便測試
+# )
+
+# st.markdown("---")
+
+# # --- 為每個選擇的裝備創建輸入區塊 ---
+# # 使用一個字典來暫存使用者輸入的數值，方便後續處理
+# input_data = {}
+
+# for equipment in options:
+#     if equipment in selected_equipments:
+#         with st.expander(f"【{equipment}】的數值輸入區", expanded=True):
+#             st.subheader(f"新 {equipment}（欲購買）")
+#             col1, col2, col3 = st.columns(3)
+#             with col1:
+#                 new_dex = st.number_input(f'敏捷(DEX)', min_value=0, step=1, key=f"{equipment}_new_dex")
+#             with col2:
+#                 new_str = st.number_input(f'力量(STR)', min_value=0, step=1, key=f"{equipment}_new_str")
+#             with col3:
+#                 price = st.number_input(f'價格(雪花)', min_value=0, step=1, key=f"{equipment}_price")
+
+#             st.subheader(f"舊 {equipment}（目前身上）")
+#             col4, col5 = st.columns(2)
+#             with col4:
+#                 current_dex = st.number_input(f'敏捷(DEX)', min_value=0, step=1, key=f"{equipment}_current_dex")
+#             with col5:
+#                 current_str = st.number_input(f'力量(STR)', min_value=0, step=1, key=f"{equipment}_current_str")
+            
+#             # 將輸入的數據儲存到字典中
+#             input_data[equipment] = {
+#                 "new_dex": new_dex, "new_str": new_str, "price": price,
+#                 "current_dex": current_dex, "current_str": current_str
+#             }
+
+# st.markdown("---")
+
+# # --- 計算與顯示結果 ---
+# # --- 計算與顯示結果 ---
+# if st.button("📊 開始計算最佳購買順序"):
+    
+#     results = []
+
+#     # 遍歷使用者輸入的每一件裝備數據
+#     for name, data in input_data.items():
+#         # 計算總提升素質
+#         stat_gain = (data["new_dex"] - data["current_dex"]) + (data["new_str"] - data["current_str"])
+        
+#         # 計算每點素質的成本
+#         # 關鍵的 edge case 處理：如果素質沒有提升，成本視為無限大
+#         if stat_gain <= 0:
+#             cost_per_stat = float('inf') # 無限大，排序時會自動排到最後
+#         else:
+#             cost_per_stat = data["price"] / stat_gain
+            
+#         results.append({
+#             "裝備名稱": name,
+#             "總提升素質": stat_gain,
+#             "價格": data["price"],
+#             "每點素質成本": cost_per_stat # <-- 正確的 key 名稱為中文
+#         })
+
+#     # 處理沒有任何有效裝備可計算的情況
+#     if not results:
+#         st.warning("請至少選擇一件裝備並輸入數值才能進行計算。")
+#     else:
+#         # ▼▼▼ 修正點：將 key 從 "cost_per_stat" 改為正確的 "每點素質成本" ▼▼▼
+#         sorted_results = sorted(results, key=lambda x: x["每點素質成本"])
+        
+#         st.subheader("📈 計算結果分析")
+
+#         # 使用 Pandas DataFrame 讓表格更美觀
+#         df = pd.DataFrame(sorted_results)
+        
+#         # 格式化 DataFrame 的顯示
+#         st.dataframe(
+#             df.style.format({
+#                 "每點素質成本": "{:,.2f}", # 格式化為有兩位小數的數字
+#                 "價格": "{:,}" # 加上千分位符號
+#             }),
+#             use_container_width=True
+#         )
+
+#         # 產生最終的購買建議
+#         # 篩選掉沒有提升的裝備
+#         valuable_items = [item for item in sorted_results if item["總提升素質"] > 0]
+        
+#         if not valuable_items:
+#             st.error("所有比較的裝備均無素質提升，沒有建議的購買順序。")
+#         else:
+#             recommendation_order = " > ".join([item["裝備名稱"] for item in valuable_items])
+#             st.success(f"🎉 **建議購買順序為： {recommendation_order}**")
+#             st.balloons()
