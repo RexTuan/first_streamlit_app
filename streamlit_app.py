@@ -2,11 +2,11 @@
 """
 streamlit檔案只要存檔, 會實時同步至網頁中!
 """
-
 import streamlit as st
 import altair as alt
 import pandas as pd 
 import numpy as np
+import plotly.express as px
 
 # # 001-單純顯示文字 
 # st.write('Hello World!')
@@ -271,3 +271,80 @@ import numpy as np
 #             recommendation_order = " > ".join([item["裝備名稱"] for item in valuable_items])
 #             st.success(f"🎉 **建議購買順序為： {recommendation_order}**")
 #             st.balloons()
+
+# 013-text_input單行文字輸入框
+text = st.text_input("欲回覆訊息請在此輸入。")
+st.success(F"您輸入的訊息:{text}")
+
+# 014-date_input日期選擇棄
+var_date = st.date_input("欲回覆訊息請在此輸入。")
+st.success(F"您輸入的訊息:{var_date}")
+
+# 015-sidebar側邊欄
+st.sidebar.title("側邊欄範例")
+st.sidebar.write("這是側邊欄的內容。")
+st.sidebar.header("選項")
+option = st.sidebar.selectbox(
+    "選擇一個選項",
+    ("選項1", "選項2", "選項3")
+)
+st.sidebar.write(f"您選擇的選項是: {option}")
+# 在主頁面顯示選擇的選項
+st.write(f"您在側邊欄選擇的選項是: {option}") 
+# 這裡可以添加更多的側邊欄內容，例如輸入框、按鈕等
+
+# 016-使用者輸入的文字會實時顯示在網頁上
+st.sidebar.header("實時輸入")
+user_input = st.sidebar.text_input("請輸入一些文字:")
+if user_input:
+    st.sidebar.write(f"您輸入的文字是: {user_input}")
+
+    # --- 側邊欄 (Sidebar) ---
+st.sidebar.header("⚙️ 控制面板")
+
+# 使用 st.sidebar.selectbox 讓使用者選擇圖表類型
+chart_type = st.sidebar.selectbox(
+    "1. 請選擇圖表類型：",
+    ("長條圖", "折線圖")
+)
+
+# 使用 st.sidebar.slider 讓使用者選擇要生成的數據點數量
+num_points = st.sidebar.slider(
+    "2. 請選擇數據點數量：",
+    min_value=5,
+    max_value=50,
+    value=20,
+    step=1
+)
+
+st.sidebar.write("---") # 在側邊欄中也可以用分隔線
+
+# 使用 st.sidebar.button 作為一個觸發器
+if st.sidebar.button("產生隨機數據！"):
+    st.sidebar.success("數據已更新！")
+
+
+# --- 主畫面 (Main Page) ---
+st.title("📊 動態圖表產生器")
+st.write(f"您正在檢視：**{chart_type}**，包含 **{num_points}** 個數據點。")
+
+# 根據側邊欄的選擇來生成數據
+# np.random.randn 會生成符合常態分佈的隨機數
+data = pd.DataFrame({
+    'x': np.arange(num_points),
+    'y': np.random.randn(num_points),
+    'category': np.random.choice(['A', 'B', 'C'], num_points)
+})
+
+# 根據側邊欄的選擇來繪製不同的圖表
+if chart_type == "長條圖":
+    fig = px.bar(data, x='x', y='y', color='category', title="隨機長條圖")
+else: # 折線圖
+    fig = px.line(data, x='x', y='y', color='category', title="隨機折線圖")
+
+# 在主畫面顯示圖表
+st.plotly_chart(fig, use_container_width=True)
+
+st.write("---")
+st.write("原始數據：")
+st.dataframe(data)
