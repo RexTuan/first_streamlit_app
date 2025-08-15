@@ -272,79 +272,128 @@ import plotly.express as px
 #             st.success(f"🎉 **建議購買順序為： {recommendation_order}**")
 #             st.balloons()
 
-# 013-text_input單行文字輸入框
-text = st.text_input("欲回覆訊息請在此輸入。")
-st.success(F"您輸入的訊息:{text}")
+# # 013-text_input單行文字輸入框
+# text = st.text_input("欲回覆訊息請在此輸入。")
+# st.success(F"您輸入的訊息:{text}")
 
-# 014-date_input日期選擇棄
-var_date = st.date_input("欲回覆訊息請在此輸入。")
-st.success(F"您輸入的訊息:{var_date}")
+# # 014-date_input日期選擇棄
+# var_date = st.date_input("欲回覆訊息請在此輸入。")
+# st.success(F"您輸入的訊息:{var_date}")
 
-# 015-sidebar側邊欄
-st.sidebar.title("側邊欄範例")
-st.sidebar.write("這是側邊欄的內容。")
-st.sidebar.header("選項")
-option = st.sidebar.selectbox(
-    "選擇一個選項",
-    ("選項1", "選項2", "選項3")
-)
-st.sidebar.write(f"您選擇的選項是: {option}")
-# 在主頁面顯示選擇的選項
-st.write(f"您在側邊欄選擇的選項是: {option}") 
-# 這裡可以添加更多的側邊欄內容，例如輸入框、按鈕等
+# # 015-sidebar側邊欄
+# st.sidebar.title("側邊欄範例")
+# st.sidebar.write("這是側邊欄的內容。")
+# st.sidebar.header("選項")
+# option = st.sidebar.selectbox(
+#     "選擇一個選項",
+#     ("選項1", "選項2", "選項3")
+# )
+# st.sidebar.write(f"您選擇的選項是: {option}")
+# # 在主頁面顯示選擇的選項
+# st.write(f"您在側邊欄選擇的選項是: {option}") 
+# # 這裡可以添加更多的側邊欄內容，例如輸入框、按鈕等
 
-# 016-使用者輸入的文字會實時顯示在網頁上
-st.sidebar.header("實時輸入")
-user_input = st.sidebar.text_input("請輸入一些文字:")
-if user_input:
-    st.sidebar.write(f"您輸入的文字是: {user_input}")
+# # 016-(gemini示範區)
+# st.sidebar.header("實時輸入")
+# user_input = st.sidebar.text_input("請輸入一些文字:")
+# if user_input:
+#     st.sidebar.write(f"您輸入的文字是: {user_input}")
 
-    # --- 側邊欄 (Sidebar) ---
-st.sidebar.header("⚙️ 控制面板")
+#     # --- 側邊欄 (Sidebar) ---
+# st.sidebar.header("⚙️ 控制面板")
 
-# 使用 st.sidebar.selectbox 讓使用者選擇圖表類型
-chart_type = st.sidebar.selectbox(
-    "1. 請選擇圖表類型：",
-    ("長條圖", "折線圖")
-)
+# # 使用 st.sidebar.selectbox 讓使用者選擇圖表類型
+# chart_type = st.sidebar.selectbox(
+#     "1. 請選擇圖表類型：",
+#     ("長條圖", "折線圖")
+# )
 
-# 使用 st.sidebar.slider 讓使用者選擇要生成的數據點數量
-num_points = st.sidebar.slider(
-    "2. 請選擇數據點數量：",
-    min_value=5,
-    max_value=50,
-    value=20,
-    step=1
-)
+# # 使用 st.sidebar.slider 讓使用者選擇要生成的數據點數量
+# num_points = st.sidebar.slider(
+#     "2. 請選擇數據點數量：",
+#     min_value=5,
+#     max_value=50,
+#     value=20,
+#     step=1
+# )
 
-st.sidebar.write("---") # 在側邊欄中也可以用分隔線
+# st.sidebar.write("---") # 在側邊欄中也可以用分隔線
 
-# 使用 st.sidebar.button 作為一個觸發器
+# # 使用 st.sidebar.button 作為一個觸發器
+# if st.sidebar.button("產生隨機數據！"):
+#     st.sidebar.success("數據已更新！")
+
+
+# # --- 主畫面 (Main Page) ---
+# st.title("📊 動態圖表產生器")
+# st.write(f"您正在檢視：**{chart_type}**，包含 **{num_points}** 個數據點。")
+
+# # 根據側邊欄的選擇來生成數據
+# # np.random.randn 會生成符合常態分佈的隨機數
+# data = pd.DataFrame({
+#     'x': np.arange(num_points),
+#     'y': np.random.randn(num_points),
+#     'category': np.random.choice(['A', 'B', 'C'], num_points)
+# })
+
+# # 根據側邊欄的選擇來繪製不同的圖表
+# if chart_type == "長條圖":
+#     fig = px.bar(data, x='x', y='y', color='category', title="隨機長條圖")
+# else: # 折線圖
+#     fig = px.line(data, x='x', y='y', color='category', title="隨機折線圖")
+
+# # 在主畫面顯示圖表
+# st.plotly_chart(fig, use_container_width=True)
+
+# st.write("---")
+# st.write("原始數據：")
+# st.dataframe(data)
+
+# 017-tabs分頁
+st.set_page_config(layout="wide") # 讓頁面寬一點，更像儀表板
+
+st.title("📊 銷售數據分析報告")
+
+# --- 準備範例數據 ---
+@st.cache_data # 快取數據，避免每次互動都重新生成
+def create_data():
+    data = {
+        '日期': pd.to_datetime(pd.date_range(start='2025-07-01', periods=31, freq='D')),
+        '銷售額': np.random.randint(5000, 15000, size=31),
+        '顧客數': np.random.randint(50, 150, size=31),
+        '產品類別': np.random.choice(['電子產品', '服飾', '家居用品'], size=31)
+    }
+    return pd.DataFrame(data)
+
+df = create_data()
+
+# --- 使用 st.tabs 創建分頁 ---
+tab_viz, tab_data, tab_summary = st.tabs(["📈 資料視覺化", "📄 原始數據", "📝 數據摘要"])
+
+with tab_viz:
+    st.header("選擇產品類別")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        product_category = st.selectbox("請選擇產品類別", df['產品類別'].unique())
+        filtered_df = df[df['產品類別'] == product_category]
+    st.header("銷售趨勢圖")
+    # 創建一個下拉選單，讓使用者選擇要看的指標
+    metric_to_plot = st.selectbox("請選擇指標", ("銷售額", "顧客數"))
+    
+    # 繪製折線圖
+    fig = px.line(df, x='日期', y=metric_to_plot, title=f'{metric_to_plot} 時間趨勢')
+    st.plotly_chart(fig, use_container_width=True)
+
+with tab_data:
+    st.header("完整原始數據")
+    # 顯示可互動的 DataFrame
+    st.dataframe(df, use_container_width=True)
+
+with tab_summary:
+    st.header("數據基本統計摘要")
+    # 顯示 Pandas 的 describe() 結果
+    st.table(df.describe())
+
 if st.sidebar.button("產生隨機數據！"):
     st.sidebar.success("數據已更新！")
-
-
-# --- 主畫面 (Main Page) ---
-st.title("📊 動態圖表產生器")
-st.write(f"您正在檢視：**{chart_type}**，包含 **{num_points}** 個數據點。")
-
-# 根據側邊欄的選擇來生成數據
-# np.random.randn 會生成符合常態分佈的隨機數
-data = pd.DataFrame({
-    'x': np.arange(num_points),
-    'y': np.random.randn(num_points),
-    'category': np.random.choice(['A', 'B', 'C'], num_points)
-})
-
-# 根據側邊欄的選擇來繪製不同的圖表
-if chart_type == "長條圖":
-    fig = px.bar(data, x='x', y='y', color='category', title="隨機長條圖")
-else: # 折線圖
-    fig = px.line(data, x='x', y='y', color='category', title="隨機折線圖")
-
-# 在主畫面顯示圖表
-st.plotly_chart(fig, use_container_width=True)
-
-st.write("---")
-st.write("原始數據：")
-st.dataframe(data)
