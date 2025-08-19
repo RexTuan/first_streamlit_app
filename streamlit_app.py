@@ -349,51 +349,76 @@ import plotly.express as px
 # st.write("原始數據：")
 # st.dataframe(data)
 
-# 017-tabs分頁
-st.set_page_config(layout="wide") # 讓頁面寬一點，更像儀表板
+# # 017-tabs分頁
+# st.set_page_config(layout="wide") # 讓頁面寬一點，更像儀表板
 
-st.title("📊 銷售數據分析報告")
+# st.title("📊 銷售數據分析報告")
 
-# --- 準備範例數據 ---
-@st.cache_data # 快取數據，避免每次互動都重新生成
-def create_data():
-    data = {
-        '日期': pd.to_datetime(pd.date_range(start='2025-07-01', periods=31, freq='D')),
-        '銷售額': np.random.randint(5000, 15000, size=31),
-        '顧客數': np.random.randint(50, 150, size=31),
-        '產品類別': np.random.choice(['電子產品', '服飾', '家居用品'], size=31)
-    }
-    return pd.DataFrame(data)
+# # --- 準備範例數據 ---
+# @st.cache_data # 快取數據，避免每次互動都重新生成
+# def create_data():
+#     data = {
+#         '日期': pd.to_datetime(pd.date_range(start='2025-07-01', periods=31, freq='D')),
+#         '銷售額': np.random.randint(5000, 15000, size=31),
+#         '顧客數': np.random.randint(50, 150, size=31),
+#         '產品類別': np.random.choice(['電子產品', '服飾', '家居用品'], size=31)
+#     }
+#     return pd.DataFrame(data)
 
-df = create_data()
+# df = create_data()
 
-# --- 使用 st.tabs 創建分頁 ---
-tab_viz, tab_data, tab_summary = st.tabs(["📈 資料視覺化", "📄 原始數據", "📝 數據摘要"])
+# # --- 使用 st.tabs 創建分頁 ---
+# tab_viz, tab_data, tab_summary = st.tabs(["📈 資料視覺化", "📄 原始數據", "📝 數據摘要"])
 
-with tab_viz:
-    st.header("選擇產品類別")
-    col1, col2, col3 = st.columns(3)
+# with tab_viz:
+#     st.header("選擇產品類別")
+#     col1, col2, col3 = st.columns(3)
     
+#     with col1:
+#         product_category = st.selectbox("請選擇產品類別", df['產品類別'].unique())
+#         filtered_df = df[df['產品類別'] == product_category]
+#     st.header("銷售趨勢圖")
+#     # 創建一個下拉選單，讓使用者選擇要看的指標
+#     metric_to_plot = st.selectbox("請選擇指標", ("銷售額", "顧客數"))
+    
+#     # 繪製折線圖
+#     fig = px.line(df, x='日期', y=metric_to_plot, title=f'{metric_to_plot} 時間趨勢')
+#     st.plotly_chart(fig, use_container_width=True)
+
+# with tab_data:
+#     st.header("完整原始數據")
+#     # 顯示可互動的 DataFrame
+#     st.dataframe(df, use_container_width=True)
+
+# with tab_summary:
+#     st.header("數據基本統計摘要")
+#     # 顯示 Pandas 的 describe() 結果
+#     st.table(df.describe())
+
+# if st.sidebar.button("產生隨機數據！"):
+#     st.sidebar.success("數據已更新！")
+
+#use st.container(), st.sidebar(), st.columns()
+
+# 018-container 排版用功能(將所有功能併入同一區)
+st.header("使用 with 語句")
+
+with st.container(border=True):
+    st.write("這個區塊裡的所有東西都在同一個 container 中。")
+    st.info("這是一個提示訊息。")
+    
+    col1, col2 = st.columns(2)
     with col1:
-        product_category = st.selectbox("請選擇產品類別", df['產品類別'].unique())
-        filtered_df = df[df['產品類別'] == product_category]
-    st.header("銷售趨勢圖")
-    # 創建一個下拉選單，讓使用者選擇要看的指標
-    metric_to_plot = st.selectbox("請選擇指標", ("銷售額", "顧客數"))
-    
-    # 繪製折線圖
-    fig = px.line(df, x='日期', y=metric_to_plot, title=f'{metric_to_plot} 時間趨勢')
-    st.plotly_chart(fig, use_container_width=True)
+        st.image("https://static.streamlit.io/examples/dog.jpg")
+    with col2:
+        st.write("您甚至可以在 container 內部再使用 st.columns 進行排版！")
 
-with tab_data:
-    st.header("完整原始數據")
-    # 顯示可互動的 DataFrame
-    st.dataframe(df, use_container_width=True)
+st.write("這段文字在 container 的外面。")
 
-with tab_summary:
-    st.header("數據基本統計摘要")
-    # 顯示 Pandas 的 describe() 結果
-    st.table(df.describe())
+image_url = f"https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand"
 
-if st.sidebar.button("產生隨機數據！"):
-    st.sidebar.success("數據已更新！")
+st.title("從 MapleStory.io 抓取道具圖片")
+st.image(image_url, width=50)
+
+
+ 
