@@ -7,6 +7,8 @@ import altair as alt
 import pandas as pd 
 import numpy as np
 import plotly.express as px
+import random
+from streamlit_extras.card import card 
 
 # # 001-單純顯示文字 
 # st.write('Hello World!')
@@ -400,25 +402,124 @@ import plotly.express as px
 
 #use st.container(), st.sidebar(), st.columns()
 
-# 018-container 排版用功能(將所有功能併入同一區)
-st.header("使用 with 語句")
+# # 018-container 排版用功能(將所有功能併入同一區)
+# st.header("使用 with 語句")
 
-with st.container(border=True):
-    st.write("這個區塊裡的所有東西都在同一個 container 中。")
-    st.info("這是一個提示訊息。")
+# with st.container(border=True):
+#     st.write("這個區塊裡的所有東西都在同一個 container 中。")
+#     st.info("這是一個提示訊息。")
     
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image("https://static.streamlit.io/examples/dog.jpg")
-    with col2:
-        st.write("您甚至可以在 container 內部再使用 st.columns 進行排版！")
+#     col1, col2 = st.columns(2)
+#     with col1:
+#         st.image("https://static.streamlit.io/examples/dog.jpg")
+#     with col2:
+#         st.write("您甚至可以在 container 內部再使用 st.columns 進行排版！")
 
-st.write("這段文字在 container 的外面。")
+# st.write("這段文字在 container 的外面。")
 
-image_url = f"https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand"
+# image_url = f"https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand" #菇菇寶貝
 
-st.title("從 MapleStory.io 抓取道具圖片")
-st.image(image_url, width=50)
+# st.title("從 MapleStory.io 抓取道具圖片")
+# st.image(image_url, width=50)
+
+# 019-st.session_state 實現狀態保持 + 衝捲模擬器
+st.set_page_config(page_title="機率模擬器", page_icon="🎲")
+
+SCROLL_DATA = {
+    "10%卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046328/icon?resize=4", 
+    "60%卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046318/icon?resize=4", 
+    "30%詛咒卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046771/icon?resize=4", 
+    }
+
+if 'use_count' not in st.session_state:
+    st.session_state.use_count = 0  #已使用次數
+    st.session_state.pass_count = 0 #衝成功次數
+    st.session_state.total_chances = 7 #初始可衝次數
+    st.session_state.last_result = None # 用來記錄上一次的結果 (成功/失敗/無)
+    st.session_state.cant_use = 0 # 用來記錄是否無法使用卷軸
+
+# --- 動態計算 ---
+remaining_chances = st.session_state.total_chances - st.session_state.use_count
+
+# --- 介面顯示 ---
+st.markdown("## 機率模擬器 ![m](https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand)")
+st.markdown("---")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    button_name = "10%卷軸"
+    image_url = SCROLL_DATA[button_name]
+    button_label = f"{button_name}  ![{button_name}]({image_url}) "
+    if st.button(button_label, key=f'{button_name}', use_container_width=True):
+        if remaining_chances <= 0:
+            st.session_state.cant_use = 1
+        else:
+            st.session_state.use_count += 1
+            if random.random() < 0.1:
+                st.session_state.pass_count += 1
+                st.session_state.last_result = 1
+            else:
+                st.session_state.last_result = 0
+            st.rerun()
+
+with col2:
+    button_name = "60%卷軸"
+    image_url = SCROLL_DATA[button_name]
+    button_label = f"{button_name}  ![{button_name}]({image_url}) "
+    if st.button(button_label, key=f'{button_name}', use_container_width=True):
+        if remaining_chances <= 0:
+            st.session_state.cant_use = 1
+        else:
+            st.session_state.use_count += 1
+            if random.random() < 0.6:
+                st.session_state.pass_count += 1
+                st.session_state.last_result = 1
+            else:
+                st.session_state.last_result = 0
+            st.rerun()
+
+with col3:
+    button_name = "30%詛咒卷軸"
+    image_url = SCROLL_DATA[button_name]
+    button_label = f"{button_name}  ![{button_name}]({image_url}) "
+    if st.button(button_label, key=f'{button_name}', use_container_width=True):
+        if remaining_chances <= 0:
+            st.session_state.cant_use = 1
+        else:
+            st.session_state.use_count += 1
+            if random.random() < 0.3:
+                st.session_state.pass_count += 1
+                st.session_state.last_result = 1
+            elif random.random() > 0.65: #摧毀道具
+
+                st.session_state.last_result = -1
+            else:
+                st.session_state.last_result = 0
+            st.rerun()
+
+st.write("---")
+st.write(f"目前可衝數量：{remaining_chances}")
+st.write(f"目前成功數量：{st.session_state.pass_count}")
+
+if st.session_state.cant_use == 1:
+    st.error("此裝備不具可衝次數，請換件試試！")
+else: 
+    if st.session_state.last_result == None:
+        st.success("   ")
+    elif st.session_state.last_result == 1:
+        st.success("卷軸閃爍了一下，神秘的力量傳到了道具身上。")
+    elif st.session_state.last_result == 0:
+        st.error("卷軸閃爍了一下，但道具沒有任何變化。")
+    elif st.session_state.last_result == -1:
+        st.error("卷軸閃爍了一下，道具被摧毀了。")
+
+if st.button("![~s](https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand)換件裝備"):
+    # 遍歷 session_state 中的所有 key 並將它們刪除
+    keys_to_delete = list(st.session_state.keys())
+    for key in keys_to_delete:
+        del st.session_state[key]
+    # 重新整理頁面，強制觸發初始化
+    st.rerun()
 
 
- 
