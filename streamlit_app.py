@@ -422,14 +422,14 @@ from streamlit_extras.card import card
 # st.title("從 MapleStory.io 抓取道具圖片")
 # st.image(image_url, width=50)
 
-# 019-st.session_state 實現狀態保持 + 衝捲模擬器
+# # 019-st.session_state 實現狀態保持 + 衝捲模擬器
 st.set_page_config(page_title="機率模擬器", page_icon="🎲")
 
 SCROLL_DATA = {
     "10%卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046328/icon?resize=4", 
     "60%卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046318/icon?resize=4", 
     "30%詛咒卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046771/icon?resize=4", 
-    "70%詛咒卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046367/icon?resize=4", 
+    "70%詛咒卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046332/icon?resize=4", 
     }
 
 if 'use_count' not in st.session_state:
@@ -542,4 +542,4 @@ if st.button("![~s](https://maplestory.io/api/THMS/20.1.0/mob/100006/render/move
     # 重新整理頁面，強制觸發初始化
     st.rerun()
 
-
+# 020-
