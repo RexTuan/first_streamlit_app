@@ -429,6 +429,7 @@ SCROLL_DATA = {
     "10%卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046328/icon?resize=4", 
     "60%卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046318/icon?resize=4", 
     "30%詛咒卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046771/icon?resize=4", 
+    "70%詛咒卷軸": "https://maplestory.io/api/THMS/20.1.0/item/2046367/icon?resize=4", 
     }
 
 if 'use_count' not in st.session_state:
@@ -439,7 +440,10 @@ if 'use_count' not in st.session_state:
     st.session_state.cant_use = 0 # 用來記錄是否無法使用卷軸
 
 # --- 動態計算 ---
-remaining_chances = st.session_state.total_chances - st.session_state.use_count
+if st.session_state.last_result != -1:
+    remaining_chances = st.session_state.total_chances - st.session_state.use_count
+else:
+    remaining_chances = 0
 
 # --- 介面顯示 ---
 st.markdown("## 機率模擬器 ![m](https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand)")
@@ -462,7 +466,6 @@ with col1:
             else:
                 st.session_state.last_result = 0
             st.rerun()
-
 with col2:
     button_name = "60%卷軸"
     image_url = SCROLL_DATA[button_name]
@@ -478,7 +481,6 @@ with col2:
             else:
                 st.session_state.last_result = 0
             st.rerun()
-
 with col3:
     button_name = "30%詛咒卷軸"
     image_url = SCROLL_DATA[button_name]
@@ -492,6 +494,24 @@ with col3:
                 st.session_state.pass_count += 1
                 st.session_state.last_result = 1
             elif random.random() > 0.65: #摧毀道具
+
+                st.session_state.last_result = -1
+            else:
+                st.session_state.last_result = 0
+            st.rerun()
+with col4:
+    button_name = "70%詛咒卷軸"
+    image_url = SCROLL_DATA[button_name]
+    button_label = f"{button_name}  ![{button_name}]({image_url}) "
+    if st.button(button_label, key=f'{button_name}', use_container_width=True):
+        if remaining_chances <= 0:
+            st.session_state.cant_use = 1
+        else:
+            st.session_state.use_count += 1
+            if random.random() < 0.7:
+                st.session_state.pass_count += 1
+                st.session_state.last_result = 1
+            elif random.random() > 0.85: #摧毀道具
 
                 st.session_state.last_result = -1
             else:
@@ -514,7 +534,7 @@ else:
     elif st.session_state.last_result == -1:
         st.error("卷軸閃爍了一下，道具被摧毀了。")
 
-if st.button("![~s](https://maplestory.io/api/GMS/210.1.1/mob/100004/render/stand)換件裝備"):
+if st.button("![~s](https://maplestory.io/api/THMS/20.1.0/mob/100006/render/move)換件裝備"):
     # 遍歷 session_state 中的所有 key 並將它們刪除
     keys_to_delete = list(st.session_state.keys())
     for key in keys_to_delete:
